@@ -1,0 +1,19 @@
+version: '3'
+
+services:
+  zookeeper:
+    image: 'bitnami/zookeeper'
+    ports:
+      - '2181:2181'
+    volumes:
+      - 'zookeeper_data:/bitnami'
+    environment:
+      - ALLOW_ANONYMOUS_LOGIN=yes
+  kafka:
+    build: .
+    depends_on:
+    - zookeeper
+
+volumes:
+  zookeeper_data:
+    driver: local
