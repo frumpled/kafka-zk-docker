@@ -71,4 +71,6 @@ RUN echo "bin/sasl-kafka-server-start.sh config/server.properties" > start-serve
 RUN echo "bin/sasl-kafka-console-producer-alice.sh --broker-list localhost:9092 --topic test --producer.config config/client-sasl.properties" > produce-as-alive.sh && chmod u+x produce-as-alive.sh
 RUN echo "bin/sasl-kafka-console-consumer-bob.sh --bootstrap-server localhost:9092 --topic test --consumer.config config/consumer-bob.properties" > consume-as-bob.sh && chmod u+x consume-as-bob.sh
 
+COPY create-acls.sh ./
+
 ENTRYPOINT ["bin/sasl-kafka-server-start.sh", "config/server.properties"]

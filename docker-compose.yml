@@ -5,15 +5,14 @@ services:
     image: 'bitnami/zookeeper'
     ports:
       - '2181:2181'
-    volumes:
-      - 'zookeeper_data:/bitnami'
     environment:
       - ALLOW_ANONYMOUS_LOGIN=yes
   kafka:
     build: .
     depends_on:
     - zookeeper
-
-volumes:
-  zookeeper_data:
-    driver: local
+  acl-scripts:
+    build: .
+    depends_on:
+    - zookeeper
+    entrypoint: "sh create-acls.sh"
