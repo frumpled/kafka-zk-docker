@@ -6,6 +6,7 @@ bin/kafka-acls.sh --authorizer kafka.security.auth.SimpleAclAuthorizer --authori
 bin/kafka-acls.sh --authorizer kafka.security.auth.SimpleAclAuthorizer --authorizer-properties zookeeper.connect=zookeeper:2181 --add --allow-principal User:bob --operation Read --topic test
 bin/kafka-acls.sh --authorizer kafka.security.auth.SimpleAclAuthorizer --authorizer-properties zookeeper.connect=zookeeper:2181 --add --allow-principal User:bob --operation Read --group bob-group
 
+# Give no permissions to CARLITA
 
-# List
-bin/kafka-acls.sh --authorizer kafka.security.auth.SimpleAclAuthorizer --authorizer-properties zookeeper.connect=zookeeper:2181 --lis
+# List existing ACLs
+bin/kafka-acls.sh --authorizer kafka.security.auth.SimpleAclAuthorizer --authorizer-properties zookeeper.connect=zookeeper:2181 --list

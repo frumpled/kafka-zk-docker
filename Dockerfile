@@ -48,6 +48,13 @@ RUN echo "" >> config/kafka_client_jaas_bob.conf && \
 	echo "  password=\"bob\";" >> config/kafka_client_jaas_bob.conf && \
 	echo "};" >> config/kafka_client_jaas_bob.conf
 
+RUN echo "" >> config/kafka_client_jaas_carlita.conf && \
+	echo "KafkaClient {" >> config/kafka_client_jaas_carlita.conf && \
+	echo "  org.apache.kafka.common.security.plain.PlainLoginModule required" >> config/kafka_client_jaas_carlita.conf && \
+	echo "  username=\"carlita\"" >> config/kafka_client_jaas_carlita.conf && \
+	echo "  password=\"carlita\";" >> config/kafka_client_jaas_carlita.conf && \
+	echo "};" >> config/kafka_client_jaas_carlita.conf
+
 RUN cp bin/kafka-console-producer.sh bin/sasl-kafka-console-producer-alice.sh && \
 	 sed /exec/d bin/sasl-kafka-console-producer-alice.sh -i && \
 	echo 'exec $(dirname $0)/kafka-run-class.sh -Djava.security.auth.login.config=$(dirname $0)/../config/kafka_client_jaas_alice.conf kafka.tools.ConsoleProducer "$@"' >> bin/sasl-kafka-console-producer-alice.sh
@@ -68,7 +75,7 @@ RUN cp bin/kafka-console-consumer.sh bin/sasl-kafka-console-consumer-bob.sh && \
 #RUN bin/kafka-acls.sh --authorizer kafka.security.auth.SimpleAclAuthorizer --authorizer-properties zookeeper.connect=zookeeper:2181 --add --allow-principal User:bob --operation Read --group bob-group
 
 RUN echo "bin/sasl-kafka-server-start.sh config/server.properties" > start-server.sh && chmod u+x start-server.sh
-RUN echo "bin/sasl-kafka-console-producer-alice.sh --broker-list localhost:9092 --topic test --producer.config config/client-sasl.properties" > produce-as-alive.sh && chmod u+x produce-as-alive.sh
+RUN echo "bin/sasl-kafka-console-producer-alice.sh --broker-list localhost:9092 --topic test --producer.config config/client-sasl.properties" > produce-as-alice.sh && chmod u+x produce-as-alice.sh
 RUN echo "bin/sasl-kafka-console-consumer-bob.sh --bootstrap-server localhost:9092 --topic test --consumer.config config/consumer-bob.properties" > consume-as-bob.sh && chmod u+x consume-as-bob.sh
 
 COPY create-acls.sh ./
