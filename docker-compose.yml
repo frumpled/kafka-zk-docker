@@ -1,18 +1,14 @@
 version: '3'
 
 services:
-  zookeeper:
-    image: 'bitnami/zookeeper'
-    ports:
-      - '2181:2181'
-    environment:
-      - ALLOW_ANONYMOUS_LOGIN=yes
+  zk:
+    build: ./zk/
   kafka:
     build: .
     depends_on:
-    - zookeeper
+    - zk
   acl-scripts:
     build: .
     depends_on:
-    - zookeeper
+    - zk
     entrypoint: "sh create-acls.sh"
