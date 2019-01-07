@@ -25,14 +25,6 @@ RUN echo "KafkaServer {" >> config/kafka_server_jaas.conf && \
 RUN cp bin/kafka-server-start.sh bin/sasl-kafka-server-start.sh && \
 	sed -e 's_exec.*_exec \$base\_dir/kafka-run-class.sh \$EXTRA\_ARGS -Djava.security.auth.login.config=\$base\_dir/../config/kafka\_server\_jaas.conf kafka.Kafka "\$@"_' bin/sasl-kafka-server-start.sh -i
 
-RUN echo "" >> config/server.properties && \
-	echo "authorizer.class.name=kafka.security.auth.SimpleAclAuthorizer" >> config/server.properties && \
-	echo "listeners=SASL_PLAINTEXT://:9092" >> config/server.properties && \
-	echo "security.inter.broker.protocol= SASL_PLAINTEXT" >> config/server.properties && \
-	echo "sasl.mechanism.inter.broker.protocol=PLAIN" >> config/server.properties && \
-	echo "sasl.enabled.mechanisms=PLAIN" >> config/server.properties && \
-	echo "" >> config/server.properties && \
-	echo "super.users=User:admin" >> config/server.properties
 
 RUN echo "" >> config/kafka_client_jaas_alice.conf && \
 	echo "KafkaClient {" >> config/kafka_client_jaas_alice.conf && \
@@ -80,4 +72,20 @@ RUN echo "bin/sasl-kafka-console-consumer-bob.sh --bootstrap-server localhost:90
 
 COPY create-acls.sh ./
 
-ENTRYPOINT ["bin/sasl-kafka-server-start.sh", "config/server.properties"]
+RUN echo "" >> config/server.properties && \
+	echo "authorizer.class.name=kafka.security.auth.SimpleAclAuthorizer" >> config/server.properties && \
+	echo "listeners=SASL_PLAINTEXT://:9092" >> config/server.properties && \
+	echo "security.inter.broker.protocol=SASL_PLAINTEXT" >> config/server.properties && \
+	echo "sasl.mechanism.inter.broker.protocol=PLAIN" >> config/server.properties && \
+	echo "sasl.enabled.mechanisms=PLAIN" >> config/server.properties && \
+	echo "" >> config/server.properties && \
+	echo "super.users=User:admin" >> config/server.properties && \
+	echo "advertised.host.name=localhost" >> config/server.properties && \
+	echo "advertised.listeners=SASL_PLAINTEXT://:9092" >> config/server.properties
+
+
+# ENTRYPOINT ["bin/sasl-kafka-server-start.sh", "config/server.properties"]
+#RUN apt install -y coreutils
+RUN touch /fake-file
+CMD ["tail", "-f", "/fake-file"]
+#ENTRYPOINT ["./start-server.sh"]
