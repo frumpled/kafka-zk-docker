@@ -2,13 +2,13 @@ version: '3'
 
 services:
   zk:
-    build: ./zk/
+    build: zk/
   kafka:
-    build: .
+    build: kafka/
     depends_on:
     - zk
   acl-scripts:
-    build: .
+    build: kafka/
     depends_on:
     - zk
     entrypoint: "sh create-acls.sh"
