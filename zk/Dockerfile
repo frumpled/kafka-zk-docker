@@ -12,9 +12,8 @@ COPY start-server.sh /
 RUN chmod +x /start-server.sh
 
 COPY zoo.cfg /zookeeper-3.4.13/conf/
+COPY java.env /zookeeper-3.4.13/conf/
 
-#CMD ["tail", "-f", "/fake-file"]
-#RUN sh /start-server.sh
+COPY server_jaas.conf /
 
-#CMD ["sh", "/start-server.sh;", "tail", "-f", "/dev/null"]
 CMD ./start-server.sh && tail -f /dev/null
