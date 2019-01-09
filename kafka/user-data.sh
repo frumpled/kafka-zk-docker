@@ -45,9 +45,6 @@ echo "" >> $SERVER_PROPS_FILE
 echo "security.protocol=SASL_SSL" >> $SERVER_PROPS_FILE
 echo "security.inter.broker.protocol=SASL_SSL" >> $SERVER_PROPS_FILE
 echo "" >> $SERVER_PROPS_FILE
-echo "security.protocol=SASL_SSL" >> $SERVER_PROPS_FILE
-echo "security.inter.broker.protocol=SASL_SSL" >> $SERVER_PROPS_FILE
-echo "" >> $SERVER_PROPS_FILE
 echo "ssl.client.auth=required" >> $SERVER_PROPS_FILE
 echo "ssl.key.password=changeit" >> $SERVER_PROPS_FILE
 echo "ssl.keystore.location=/server.keystore.jks" >> $SERVER_PROPS_FILE
