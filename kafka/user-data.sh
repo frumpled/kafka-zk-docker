@@ -64,25 +64,11 @@ echo "super.users=User:admin;User:alice;" >> $SERVER_PROPS_FILE
 #echo "advertised.listeners=SASL_PLAINTEXT://:9092" >> $SERVER_PROPS_FILE
 
 
-# Create client properties file:
-CLIENT_PROPS_FILE="config/client-ssl.properites"
-echo "security.protocol=SASL_SSL" > $CLIENT_PROPS_FILE
-echo "sasl.mechanism=SCRAM-SHA-512" >> $CLIENT_PROPS_FILE
-echo "ssl.client.auth=required" >> $CLIENT_PROPS_FILE
-echo "ssl.key.password=required" >> $CLIENT_PROPS_FILE
-echo "ssl.truststore.location=/server.truststore.jks" >> $CLIENT_PROPS_FILE
-echo "ssl.truststore.password=changeit" >> $CLIENT_PROPS_FILE
-echo "ssl.keystore.location=/server.keystore.jks" >> $CLIENT_PROPS_FILE
-echo "ssl.keystore.password=changeit" >> $CLIENT_PROPS_FILE
-echo "ssl.key.password=changeit" >> $CLIENT_PROPS_FILE
-
-
-
 ###
 # Local Dev stuff:
 ###
 
-create_jaas_file() { echo -e "KafkaClient {\n\torg.apache.kafka.common.security.scram.ScramLoginModule required\n\tusername=\"$1\"\n\tpassword=\"$1\";\n}" > "/$1_jaas.conf"; }
+create_jaas_file() { echo "KafkaClient {\n\torg.apache.kafka.common.security.scram.ScramLoginModule required\n\tusername=\"$1\"\n\tpassword=\"$1\";\n};" > "/$1_jaas.conf"; }
 create_jaas_file alice
 create_jaas_file bob
 
@@ -99,17 +85,17 @@ echo 'exec $(dirname $0)/kafka-run-class.sh -Djava.security.auth.login.config=/b
 cp config/consumer.properties config/consumer-bob.properties
 echo "group.id=bob-group" >> config/consumer-bob.properties
 
-cp config/producer.properties config/producer.alice.properties
-echo "security.protocol=SASL_SSL" >> config/producer.alice.properties
-echo "sasl.mechanism=PLAIN" >> config/producer.alice.properties
-echo "sasl.mechanism=SCRAM-SHA-512" >> config/producer.alice.properties
-echo "ssl.truststore.location=/server.truststore.jks" >> config/producer.alice.properties
-echo "ssl.truststore.password=changeit" >> config/producer.alice.properties
-echo "ssl.keystore.location=/server.keystore.jks" >> config/producer.alice.properties
-echo "ssl.keystore.password=changeit" >> config/producer.alice.properties
-echo "ssl.key.password=changeit" >> config/producer.alice.properties
-echo "# Added w/o confirmation:" >> config/producer.alice.properties
-echo "bootstrap.servers=localhost:9092" >> config/producer.alice.properties
-
 echo "bin/kafka-console-producer-alice.sh --broker-list localhost:9092 --topic test --producer.config config/producer.properties" > produce-as-alice.sh && chmod u+x produce-as-alice.sh
 echo "bin/kafka-console-consumer-bob.sh --bootstrap-server localhost:9092 --topic test --consumer.config config/consumer.properties" > consume-as-bob.sh && chmod u+x consume-as-bob.sh
+
+# Create client properties file:
+PRODUCER_PROPS_FILE="config/producer.properties"
+echo "security.protocol=SASL_SSL" >> $PRODUCER_PROPS_FILE
+echo "sasl.mechanism=SCRAM-SHA-512" >> $PRODUCER_PROPS_FILE
+echo "ssl.client.auth=required" >> $PRODUCER_PROPS_FILE
+echo "ssl.key.password=required" >> $PRODUCER_PROPS_FILE
+echo "ssl.truststore.location=/server.truststore.jks" >> $PRODUCER_PROPS_FILE
+echo "ssl.truststore.password=changeit" >> $PRODUCER_PROPS_FILE
+echo "ssl.keystore.location=/server.keystore.jks" >> $PRODUCER_PROPS_FILE
+echo "ssl.keystore.password=changeit" >> $PRODUCER_PROPS_FILE
+echo "ssl.key.password=changeit" >> $PRODUCER_PROPS_FILE

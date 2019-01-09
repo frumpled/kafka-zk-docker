@@ -13,7 +13,7 @@ WORKDIR /kafka_2.11-2.1.0
 COPY user-data.sh ./
 RUN sh user-data.sh
 
-COPY create-acls.sh ./
+COPY create-acls-and-auth.sh ./
 
 RUN touch /fake-file
 CMD ["tail", "-f", "/fake-file"]

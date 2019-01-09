@@ -11,4 +11,4 @@ services:
     build: kafka/
     depends_on:
     - zk
-    entrypoint: "sh create-acls.sh"
+    entrypoint: "sh create-acls-and-auth.sh"
