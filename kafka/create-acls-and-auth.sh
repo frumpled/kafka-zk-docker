@@ -13,3 +13,5 @@ bin/kafka-acls.sh --authorizer kafka.security.auth.SimpleAclAuthorizer --authori
 
 # Create auth user:
 bin/kafka-configs.sh --zookeeper ${ZOOKEEPER}:2181 --alter --add-config 'SCRAM-SHA-512=[password=admin]' --entity-type users --entity-name admin
+bin/kafka-configs.sh --zookeeper ${ZOOKEEPER}:2181 --alter --add-config 'SCRAM-SHA-512=[password=alice]' --entity-type users --entity-name alice
+bin/kafka-configs.sh --zookeeper ${ZOOKEEPER}:2181 --alter --add-config 'SCRAM-SHA-512=[password=bob]' --entity-type users --entity-name bob
