@@ -14,6 +14,7 @@ COPY user-data.sh ./
 RUN sh user-data.sh
 
 COPY create-acls-and-auth.sh ./
+RUN ln -s /kafka_2.11-2.1.0 /usr/bin/kafka
 
 RUN touch /fake-file
 CMD ["tail", "-f", "/fake-file"]
